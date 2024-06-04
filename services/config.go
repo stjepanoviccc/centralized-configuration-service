@@ -49,11 +49,3 @@ func (s ConfigurationService) Delete(config model.Configuration, ctx context.Con
 
 	return s.repo.Delete(config.Name, ver, ctx)
 }
-
-func (s ConfigurationService) Update(config model.Configuration) error {
-	return s.repo.Update(config)
-}
-
-func (s ConfigurationService) Delete(config model.Configuration) error {
-	return s.repo.Delete(config)
-}

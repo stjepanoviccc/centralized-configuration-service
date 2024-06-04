@@ -27,19 +27,6 @@ import (
 )
 
 func main() {
-	cfg := config.GetConfig()
-
-	ctx := context.Background()
-	exp, err := newExporter(cfg.JaegerAddress)
-	if err != nil {
-		log.Fatalf("failed to initialize exporter: %v", err)
-	}
-	tp := newTraceProvider(exp)
-	defer func() { _ = tp.Shutdown(ctx) }()
-	otel.SetTracerProvider(tp)
-	otel.SetTextMapPropagator(propagation.TraceContext{})
-	tracer := tp.Tracer("ars_projekat")
-
 	// Jaeger startup
 	cfg := config.GetConfig()
 
