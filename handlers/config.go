@@ -49,7 +49,7 @@ func (c ConfigurationHandler) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	renderJSON(ctx, w, config)
+	renderJSON(ctx, w, config, http.StatusOK)
 	span.SetStatus(codes.Ok, "")
 }
 
@@ -109,7 +109,7 @@ func (c ConfigurationHandler) Upsert(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	renderJSON(ctx, w, cfg)
+	renderJSON(ctx, w, cfg, http.StatusCreated)
 	span.SetStatus(codes.Ok, "")
 }
 
@@ -156,7 +156,7 @@ func decodeBody(r io.Reader) (*model.Configuration, error) {
 	return &configuration, nil
 }
 
-func renderJSON(ctx context.Context, w http.ResponseWriter, v interface{}) {
+func renderJSON(ctx context.Context, w http.ResponseWriter, v interface{}, statusCode int) {
 	marshal, err := json.Marshal(v)
 	if err != nil {
 		span := trace.SpanFromContext(ctx)
@@ -166,7 +166,7 @@ func renderJSON(ctx context.Context, w http.ResponseWriter, v interface{}) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(statusCode)
 	if _, err = w.Write(marshal); err != nil {
 		span := trace.SpanFromContext(ctx)
 		span.SetStatus(codes.Error, err.Error())

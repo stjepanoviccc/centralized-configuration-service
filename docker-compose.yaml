@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    image: aleksannderz57/ars_projekat
     container_name: app
     hostname: app
     ports:
@@ -22,7 +22,7 @@ services:
     image: consul:1.15.4
     ports:
       - "8500:8500"
-    command: "agent -dev -client=0.0.0.0"
+    command: "agent -server -data-dir=/consul/data -bootstrap=true -ui -client=0.0.0.0"
     volumes:
       - consul-data:/consul/data
     networks:

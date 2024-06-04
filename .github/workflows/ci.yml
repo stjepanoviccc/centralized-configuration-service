@@ -4,17 +4,24 @@ on:
   push:
     branches:
       - main
-
 jobs:
   build:
+    strategy:
+      matrix:
+        go-version: ['1.22.0']
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      -
         name: Running unit tests
-        uses: go test ./services_test/
+        run: go test ./services_test/
       -
         name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -33,4 +40,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/ars_projekat:latest

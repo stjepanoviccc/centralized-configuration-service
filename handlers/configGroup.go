@@ -70,7 +70,7 @@ func (cg ConfigurationGroupHandler) Get(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	renderJSON(ctx, w, cGroup)
+	renderJSON(ctx, w, cGroup, http.StatusOK)
 	span.SetStatus(codes.Ok, "")
 }
 
@@ -148,7 +148,7 @@ func (cg ConfigurationGroupHandler) AddConfig(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	renderJSON(ctx, w, cGroup)
+	renderJSON(ctx, w, cGroup, http.StatusCreated)
 	span.SetStatus(codes.Ok, "")
 }
 
@@ -193,7 +193,7 @@ func (cg ConfigurationGroupHandler) Upsert(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	renderJSON(ctx, w, cfgGroup)
+	renderJSON(ctx, w, cfgGroup, http.StatusCreated)
 	span.SetStatus(codes.Ok, "")
 }
 
