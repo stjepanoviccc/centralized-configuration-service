@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: app
+    hostname: app
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - consul
+      - jaeger
+    networks:
+       - network
+    environment:
+      SERVICE_ADDRESS: :${PORT}
+      JAEGER_ADDRESS: ${JAEGER_ADDRESS}
+      DB: ${DB_NAME}
+      DBPORT: ${DBPORT}
+
+  consul:
+    image: consul:1.15.4
+    ports:
+      - "8500:8500"
+    command: "agent -dev -client=0.0.0.0"
+    volumes:
+      - consul-data:/consul/data
+    networks:
+      - network
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    networks:
+      - network
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
+    networks:
+      - network
+
+volumes:
+  consul-data:
+  prometheus-data:
+
+networks:
+  network:
+    driver: bridge

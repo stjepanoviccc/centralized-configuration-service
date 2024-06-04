@@ -1,0 +1,202 @@
+swagger: "2.0"
+info:
+    description: "API for ARS Projekat"
+    version: "0.0.1"
+    title: "ARS Projekat API"
+host: "localhost:8000"
+basePath: "/"
+schemes:
+    - "http"
+produces:
+    - "application/json"
+paths:
+    /configs/{name}/{version}:
+        get:
+            summary: "Get configuration"
+            parameters:
+                - name: "name"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "version"
+                  in: "path"
+                  required: true
+                  type: "string"
+            responses:
+                200:
+                    description: "successful operation"
+                400:
+                    description: "bad request"
+                404:
+                    description: "not found"
+        delete:
+            summary: "Delete configuration"
+            parameters:
+                - name: "name"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "version"
+                  in: "path"
+                  required: true
+                  type: "string"
+            responses:
+                200:
+                    description: "successful operation"
+                400:
+                    description: "bad request"
+                404:
+                    description: "not found"
+    /configs/:
+        post:
+            summary: "Upsert a configuration"
+            parameters:
+                - name: "Idempotency-Key"
+                  in: "header"
+                  required: true
+                  type: "string"
+                - name: "body"
+                  in: "body"
+                  required: true
+                  schema:
+                      $ref: "#/definitions/Configuration"
+            responses:
+                201:
+                    description: "created"
+                400:
+                    description: "bad request"
+    /groups/{name}/{version}/{labels}:
+        get:
+            summary: "Get configuration group"
+            parameters:
+                - name: "name"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "version"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "labels"
+                  in: "path"
+                  required: true
+                  type: "string"
+            responses:
+                200:
+                    description: "successful operation"
+                400:
+                    description: "bad request"
+                404:
+                    description: "not found"
+        delete:
+            summary: "Delete configuration group"
+            parameters:
+                - name: "name"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "version"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "labels"
+                  in: "path"
+                  required: true
+                  type: "string"
+            responses:
+                200:
+                    description: "successful operation"
+                400:
+                    description: "bad request"
+                404:
+                    description: "not found"
+    /groups/:
+        post:
+            summary: "Upsert a configuration group"
+            parameters:
+                - name: "Idempotency-Key"
+                  in: "header"
+                  required: true
+                  type: "string"
+                - name: "body"
+                  in: "body"
+                  required: true
+                  schema:
+                      $ref: "#/definitions/ConfigurationGroup"
+            responses:
+                201:
+                    description: "created"
+                400:
+                    description: "bad request"
+    /groups/{name}/{version}:
+        put:
+            summary: "Add configuration to group"
+            parameters:
+                - name: "name"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "version"
+                  in: "path"
+                  required: true
+                  type: "string"
+                - name: "body"
+                  in: "body"
+                  required: true
+                  schema:
+                      $ref: "#/definitions/Configuration"
+            responses:
+                200:
+                    description: "successful operation"
+                400:
+                    description: "bad request"
+definitions:
+    Version:
+        type: "object"
+        properties:
+            major:
+                type: "integer"
+            minor:
+                type: "integer"
+            patch:
+                type: "integer"
+    Configuration:
+        type: "object"
+        required:
+            - "name"
+            - "version"
+            - "parameters"
+        properties:
+            name:
+                type: "string"
+            id:
+                type: "integer"
+            version:
+                $ref: "#/definitions/Version"
+            parameters:
+                type: "object"
+                additionalProperties:
+                    type: "string"
+            labels:
+                type: "object"
+                additionalProperties:
+                    type: "string"
+    ConfigurationGroup:
+        type: "object"
+        required:
+            - "name"
+            - "version"
+            - "configurations"
+        properties:
+            name:
+                type: "string"
+            version:
+                $ref: "#/definitions/Version"
+            configurations:
+                type: "array"
+                items:
+                    $ref: "#/definitions/Configuration"
+            labels:
+                type: "object"
+                additionalProperties:
+                    type: "string"
