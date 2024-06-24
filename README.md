@@ -131,14 +131,11 @@ In our particular case we have one action which tests, builds and uploads our ap
 
 ## Authors  
 
-**Andrej Stjepanović**  
-Student at the **Faculty of Technical Sciences** in Novi Sad  
-Undergraduate of Software Engineering  
+Andrej Stjepanović,  
+Software Developer  
 
-**Aleksander Zajac**  
-Student at the **Faculty of Technical Sciences** in Novi Sad  
-Undergraduate of Software Engineering   
+Aleksandar Zajac,  
+Software Developer  
 
-**Dragan Bijelić**  
-Student at the **Faculty of Technical Sciences** in Novi Sad  
-Undergraduate of Software Engineering  
+Dragan Bijelic,  
+Software Developer
